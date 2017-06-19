@@ -11,5 +11,5 @@ Things needed to make this work.  Needs to be located in the Hashcat folder wher
 5. Prompt for Attack Type [Default BruteForce]
 
 ## ToDo 
-1. Finish up testing with a variety of different files and attack modes.
-2. Error Checking
+- [ ] Finish up testing with a variety of different files and attack modes.
+- [ ] Error Checking
