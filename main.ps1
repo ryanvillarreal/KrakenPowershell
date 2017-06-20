@@ -93,7 +93,7 @@ if(! $inputfile){
 
 # Get Company code 
 $COMPANYCODE = Read-Host -Prompt 'Comapny Code'
-$OUTPUT_FILE= "./Output/" +$COMPANYCODE+  "batchcrack.out"
+$OUTPUT_FILE= "./Output/" +$COMPANYCODE+  "_batchcrack.out"
 Write-Host "Output File:" $OUTPUT_FILE
 
 ## Change the Dictionaries listed below to your favorites!
@@ -362,8 +362,9 @@ if ($COMBINATOR -eq 1){
 if ($MASK -eq 1){
     Write-Host 'Running mask attacks'
     Write-Host ""
+    $INPUT_MASK = Read-Host -Prompt "Mask Attack"
     $arg1 = "-a 3 ?l?l?l?l?l?l?d?d?"
-    run $arg1
+    run "-a 3 $INPUT_MASK"
 }
 
 #
