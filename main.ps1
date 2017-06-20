@@ -92,9 +92,8 @@ if(! $inputfile){
 }
 
 # Get Company code 
-#$COMPANYCODE = Read-Host -Prompt 'Comapny Code'
-$COMPANYCODE = "TEST"
-$OUTPUT_FILE= "./Output/batchcrack_" + $COMPANYCODE + ".out"
+$COMPANYCODE = Read-Host -Prompt 'Comapny Code'
+$OUTPUT_FILE= "./Output/" +$COMPANYCODE+  "batchcrack.out"
 Write-Host "Output File:" $OUTPUT_FILE
 
 ## Change the Dictionaries listed below to your favorites!
@@ -276,7 +275,7 @@ Write-Host ""
 # Change after debugging
 $HASH_MODE = Read-Host -Prompt 'Hash Mode [0]'
 # setup Hashcat flags
-$FLAGS = "--remove --hash-type=$HASH_MODE -outfile=$OUTPUT_FILE"
+$FLAGS = "--hash-type=$HASH_MODE -o $OUTPUT_FILE"
 
 
 #STOP AND READ THIS SECTION
