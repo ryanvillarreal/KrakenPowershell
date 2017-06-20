@@ -38,13 +38,16 @@ if(!(Test-Path "../WordLists") -and !(Test-Path "./rules")){
 if ((gwmi win32_operatingsystem | select osarchitecture).osarchitecture -eq "64-bit")
 {
     #64 bit logic here
-    $HASHCAT="./hashcat64.exe"
+    $HASHCAT=".\hashcat64.exe"
 }
 else
 {
     #32 bit logic here
-    $HASHCAT="./hashcat32.exe"
+    $HASHCAT=".\hashcat32.exe"
 }
+
+#GLOBAL Variables
+$currentpath = (Get-Item -Path ".\" -Verbose).FullName
 
 #
 ## Functions 
@@ -68,7 +71,7 @@ function run([string]$arg1){
     $START=(Get-Date).Millisecond
 
     # Call the hashcat command here. 
-    Write-Host $HASHCAT $FLAGS $arg1
+    Invoke-Expression "& $HASHCAT $FLAGS $inputfile $arg1"
 
     # stop time for record keeping
     $STOP=$(Get-Date).Millisecond
@@ -76,7 +79,6 @@ function run([string]$arg1){
 }
 
 
-$currentpath = (Get-Item -Path ".\" -Verbose).FullName
 $inputfile = Get-FileName $currentpath
 if(! $inputfile){
     Write-Host "No File Selected"
@@ -84,7 +86,8 @@ if(! $inputfile){
 }
 
 # Get Company code 
-$COMPANYCODE = Read-Host -Prompt 'Comapny Code'
+#$COMPANYCODE = Read-Host -Prompt 'Comapny Code'
+$COMPANYCODE = "TEST"
 $OUTPUT_FILE= "batchcrack_" + $COMPANYCODE + ".out"
 Write-Host "Output File:" $OUTPUT_FILE
 
@@ -267,7 +270,7 @@ Write-Host ""
 # Change after debugging
 $HASH_MODE = Read-Host -Prompt 'Hash Mode [0]'
 # setup Hashcat flags
-$FLAGS = " --remove --outfile=$OUTPUT_FILE --hash-type=$HASH_MODE "
+$FLAGS = " --hash-type=$HASH_MODE "
 
 
 #STOP AND READ THIS SECTION
@@ -309,7 +312,7 @@ if ($WORDLIST -eq 1){
     Write-Host ""
     Get-ChildItem "../WordLists/" | Sort-Object length | ForEach-Object{
         # Define the per-wordlist action
-        Write-Host $_.FullName
+        #Write-Host $_.FullName
         run $_.FullName
     }
 }
@@ -320,10 +323,13 @@ if ($WORDLIST -eq 1){
 if ($RULES -eq 1){
     # dont run all the rules ... to many dupes etc ... 
     Write-Host 'Running rules in the rules folder'
-    Write-Host ""
+    
+    Read-Host -Prompt "Which Dictionary"
+    $test = Get-FileName $currentpath
+    
     Get-ChildItem "./rules" | ForEach-Object{
-        Write-Host $_.FullName
-        $arg1 = $_.FullName + " " + $DICT_FILE_TINY
+        #Write-Host $_.FullName
+        $arg1 = $_.FullName + " " + $test
         run  $arg1
     }
 }
