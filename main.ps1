@@ -18,18 +18,25 @@
     Author: Ryan V
     Date:   June 19, 2017  
 #>
-
+#GLOBAL Variables
+$currentpath = (Get-Item -Path ".\" -Verbose).FullName
 
 # check to make sure all of the files are present. 
 # Looking for WordList, Rules, exes, etc
 if(!(Test-Path "hashcat64.exe") -Or !(Test-Path "hashcat32.exe")){
     Write-Host "Hashcat Executables not present"
+    # Want to grab them?  Maybe make a call to download the hashcat exes and unpack?
     break
 }
 
 if(!(Test-Path "../WordLists") -and !(Test-Path "./rules")){
     Write-Host "Required Folders not present"
+    # Want to build them?  grab the SecLists with passwords and ./rules from hashcat?
     break
+}
+# check to see if the Output file is there.  if not build it. 
+if(!(Test-Path "./Output")){
+    New-Item -Name "Output" -ItemType directory
 }
 
 #
@@ -46,8 +53,6 @@ else
     $HASHCAT=".\hashcat32.exe"
 }
 
-#GLOBAL Variables
-$currentpath = (Get-Item -Path ".\" -Verbose).FullName
 
 #
 ## Functions 
@@ -71,7 +76,8 @@ function run([string]$arg1){
     $START=(Get-Date).Millisecond
 
     # Call the hashcat command here. 
-    Invoke-Expression "& $HASHCAT $FLAGS $inputfile $arg1"
+    #Write-Host "$HASHCAT $FLAGS $inputfile $arg1"
+    Invoke-Expression "& $HASHCAT $FLAGS $INPUTFILE $arg1"
 
     # stop time for record keeping
     $STOP=$(Get-Date).Millisecond
@@ -79,16 +85,16 @@ function run([string]$arg1){
 }
 
 
-$inputfile = Get-FileName $currentpath
+$INPUTFILE = Get-FileName $currentpath
 if(! $inputfile){
-    Write-Host "No File Selected"
+    Write-Host "No Input File Selected"
     break
 }
 
 # Get Company code 
 #$COMPANYCODE = Read-Host -Prompt 'Comapny Code'
 $COMPANYCODE = "TEST"
-$OUTPUT_FILE= "batchcrack_" + $COMPANYCODE + ".out"
+$OUTPUT_FILE= "./Output/batchcrack_" + $COMPANYCODE + ".out"
 Write-Host "Output File:" $OUTPUT_FILE
 
 ## Change the Dictionaries listed below to your favorites!
@@ -270,7 +276,7 @@ Write-Host ""
 # Change after debugging
 $HASH_MODE = Read-Host -Prompt 'Hash Mode [0]'
 # setup Hashcat flags
-$FLAGS = " --hash-type=$HASH_MODE "
+$FLAGS = "--remove --hash-type=$HASH_MODE -outfile=$OUTPUT_FILE"
 
 
 #STOP AND READ THIS SECTION
@@ -281,6 +287,7 @@ Combinator Mode takes two wordlists, defined in that section below, and combines
 Mask Mode does brute forcing against pre-defined masks (e.g., ?u?l?l?l?l?l?l?d?d?s, where ?=character, u=uppercase, l=lowercase, d=digit, s=symbol)
 Hybrid Mode takes the defined wordlists and appends or prepends characters in a wordlist/bruteforce attack.
 Bruteforce tries every combination for the defined word length."
+Write-Host ""
 Read-Host -Prompt "Press Enter To Continue..."
 
 # Setup options
@@ -324,13 +331,13 @@ if ($RULES -eq 1){
     # dont run all the rules ... to many dupes etc ... 
     Write-Host 'Running rules in the rules folder'
     
-    Read-Host -Prompt "Which Dictionary"
-    $test = Get-FileName $currentpath
+    Read-Host "Which Dictionary?"
+    $DICT = Get-FileName $currentpath
     
     Get-ChildItem "./rules" | ForEach-Object{
         #Write-Host $_.FullName
-        $arg1 = $_.FullName + " " + $test
-        run  $arg1
+        $arg1 = "-a 0 -r " + $_.FullName + " " + $DICT
+        run $arg1
     }
 }
 
@@ -340,7 +347,13 @@ if ($RULES -eq 1){
 if ($COMBINATOR -eq 1){
     Write-Host 'Running combinator attacks'
     Write-Host ""
-    $arg1 = "-a 1 " + $DICT_FILE_TINY + " " + $DICT_FILE_TINY
+    # which two Dictionaries to run against?
+    Read-Host "1st Dictionary to combine?"
+    $DICT_ONE = Get-FileName $currentpath
+    Read-Host "2nd Dictionary to combine?"
+    $DICT_TWO = Get-FileName $currentpath
+
+    $arg1 = "-a 1 " + $DICT_ONE + " " + $DICT_TWO
     run $arg1
 }
 
@@ -356,22 +369,20 @@ if ($MASK -eq 1){
 
 #
 # hybrid attacks
-#
+# Future work.  Ask the user how many letters/numbers to append and repend onto the current dictionary word
 if ($HYBRID -eq 1){
     Write-Host 'Running hybrid attacks'
     Write-Host ""
     $arg1 = "-a 6 -1 ?l?d?s?u $DICT_FILE_TINY ?1"
-    $arg2 = "-a 7 -1 ?l?d?s?u ?1 $DICT_FILE_SMALL"
     run $arg1
-    run $arg2
 }
 
 #
 # bruteforce attacks
 #
 if ($BRUTEFORCE -eq 1){
-    Write-Host 'Running brute-force attacks'
+    Write-Host 'Running brute-force attacks - This might take a while.'
     Write-Host ""
-    $arg1 = "-a 3 -1 ?l?u?d?s ?1?1?1?1?1?1?1?1"
+    $arg1 = "-a 3 -1 ?l?u?d?s ?l?l?l?l?l?l?l?l"
     run $arg1
 }
