@@ -99,174 +99,256 @@ function run([string]$arg1){
 }
 
 function getHashMode(){
-    Write-Host  '0  =  MD5'
-    Write-Host '10  =  md5($pass.$salt)'
-    Write-Host '11  =  Joomla < 2.5.18'
-    Write-Host '12  =  PostgreSQL'
-    Write-Host '20  =  md5($salt.$pass)'
-    Write-Host '21  =  osCommerce'
-    Write-Host '21  =  xt:Commerce'
-    Write-Host '22  =  Juniper Netscreen/SSG (ScreenOS)'
-    Write-Host '23  =  Skype'
-    Write-Host '30  =  md5(unicode($pass).$salt)'
-    Write-Host '40  =  md5($salt.unicode($pass))'
-    Write-Host '50  =  HMAC-MD5 (key  $pass)'
-    Write-Host '60  =  HMAC-MD5 (key  $salt)'
-    Write-Host '100  =  SHA1'
-    Write-Host '101  =  nsldap, SHA-1(Base64), Netscape LDAP SHA'
-    Write-Host '110  =  sha1($pass.$salt)'
-    Write-Host '111  =  nsldaps, SSHA-1(Base64), Netscape LDAP SSHA'
-    Write-Host '112  =  Oracle S: Type (Oracle 11+)'
-    Write-Host '120  =  sha1($salt.$pass)'
-    Write-Host '121  =  SMF (Simple Machines Forum)'
-    Write-Host '122  =  OSX v10.4'
-    Write-Host '122  =  OSX v10.5'
-    Write-Host '122  =  OSX v10.6'
-    Write-Host '124  =  Django (SHA-1)'
-    Write-Host '130  =  sha1(unicode($pass).$salt)'
-    Write-Host '131  =  MSSQL(2000)'
-    Write-Host '132  =  MSSQL(2005)'
-    Write-Host '133  =  PeopleSoft'
-    Write-Host '140  =  sha1($salt.unicode($pass))'
-    Write-Host '141  =  EPiServer 6.x < v4'
-    Write-Host '150  =  HMAC-SHA1 (key  $pass)'
-    Write-Host '160  =  HMAC-SHA1 (key  $salt)'
-    Write-Host '200  =  MySQL323'
-    Write-Host '300  =  MySQL4.1/MySQL5'
-    Write-Host '400  =  phpass'
-    Write-Host '400  =  phpBB3'
-    Write-Host '400  =  Joomla > 2.5.18'
-    Write-Host '400  =  Wordpress'
-    Write-Host '500  =  md5crypt $1$, MD5(Unix)'
-    Write-Host '500  =  Cisco-IOS $1$'
-    Write-Host '501  =  Juniper IVE'
-    Write-Host '900  =  MD4'
-    Write-Host '1000  =  NTLM'
-    Write-Host '1100  =  Domain Cached Credentials (DCC), MS Cache'
-    Write-Host '1400  =  SHA-256'
-    Write-Host '1410  =  sha256($pass.$salt)'
-    Write-Host '1420  =  sha256($salt.$pass)'
-    Write-Host '1421  =  hMailServer'
-    Write-Host '1430  =  sha256(unicode($pass).$salt)'
-    Write-Host '1440  =  sha256($salt.unicode($pass))'
-    Write-Host '1441  =  EPiServer 6.x > v4'
-    Write-Host '1450  =  HMAC-SHA256 (key  $pass)'
-    Write-Host '1460  =  HMAC-SHA256 (key  $salt)'
-    Write-Host '1500  =  descrypt, DES(Unix), Traditional DES'
-    Write-Host '1600  =  Apache $apr1$'
-    Write-Host '1700  =  SHA-512'
-    Write-Host '1710  =  sha512($pass.$salt)'
-    Write-Host '1711  =  SSHA-512(Base64), LDAP {SSHA512}'
-    Write-Host '1720  =  sha512($salt.$pass)'
-    Write-Host '1722  =  OSX v10.7'
-    Write-Host '1730  =  sha512(unicode($pass).$salt)'
-    Write-Host '1731  =  MSSQL(2012)'
-    Write-Host '1731  =  MSSQL(2014)'
-    Write-Host '1740  =  sha512($salt.unicode($pass))'
-    Write-Host '1750  =  HMAC-SHA512 (key  $pass)'
-    Write-Host '1760  =  HMAC-SHA512 (key  $salt)'
-    Write-Host '1800  =  sha512crypt $6$, SHA512(Unix)'
-    Write-Host '2100  =  Domain Cached Credentials 2 (DCC2), MS Cache 2'
-    Write-Host '2400  =  Cisco-PIX'
-    Write-Host '2410  =  Cisco-ASA'
-    Write-Host '2500  =  WPA/WPA2'
-    Write-Host '2600  =  md5(md5($pass)'
-    Write-Host '2611  =  vBulletin < v3.8.5'
-    Write-Host '2612  =  PHPS'
-    Write-Host '2711  =  vBulletin > v3.8.5'
-    Write-Host '2811  =  MyBB'
-    Write-Host '2811  =  IPB (Invison Power Board)'
-    Write-Host '3000  =  LM'
-    Write-Host '3100  =  Oracle H: Type (Oracle 7+)'
-    Write-Host '3200  =  bcrypt $2*$, Blowfish(Unix)'
-    Write-Host '3710  =  md5($salt.md5($pass))'
-    Write-Host '3711  =  Mediawiki B type'
-    Write-Host '3800  =  md5($salt.$pass.$salt)'
-    Write-Host '4300  =  md5(strtoupper(md5($pass)))'
-    Write-Host '4400  =  md5(sha1($pass))'
-    Write-Host '4500  =  sha1(sha1($pass)'
-    Write-Host '4700  =  sha1(md5($pass))'
-    Write-Host '4800  =  iSCSI CHAP authentication, MD5(Chap)'
-    Write-Host '4900  =  sha1($salt.$pass.$salt)'
-    Write-Host '5000  =  SHA-3(Keccak)'
-    Write-Host '5100  =  Half MD5'
-    Write-Host '5200  =  Password Safe v3'
-    Write-Host '5300  =  IKE-PSK MD5'
-    Write-Host '5400  =  IKE-PSK SHA1'
-    Write-Host '5500  =  NetNTLMv1'
-    Write-Host '5500  =  NetNTLMv1 + ESS'
-    Write-Host '5600  =  NetNTLMv2'
-    Write-Host '5700  =  Cisco-IOS $4$'
-    Write-Host '5800  =  Android PIN'
-    Write-Host '6000  =  RipeMD160'
-    Write-Host '6100  =  Whirlpool'
-    Write-Host '6300  =  AIX {smd5}'
-    Write-Host '6400  =  AIX {ssha256}'
-    Write-Host '6500  =  AIX {ssha512}'
-    Write-Host '6600  =  1Password, agilekeychain'
-    Write-Host '6700  =  AIX {ssha1}'
-    Write-Host '6800  =  Lastpass'
-    Write-Host '6900  =  GOST R 34.11-94'
-    Write-Host '7100  =  OSX v10.8'
-    Write-Host '7100  =  OSX v10.9'
-    Write-Host '7100  =  OSX v10.10'
-    Write-Host '7200  =  GRUB 2'
-    Write-Host '7300  =  IPMI2 RAKP HMAC-SHA1'
-    Write-Host '7400  =  sha256crypt $5$, SHA256(Unix)'
-    Write-Host '7500  =  Kerberos 5 AS-REQ Pre-Auth etype 23'
-    Write-Host '7600  =  Redmine'
-    Write-Host '7700  =  SAP CODVN B (BCODE)'
-    Write-Host '7800  =  SAP CODVN F/G (PASSCODE)'
-    Write-Host '7900  =  Drupal7'
-    Write-Host '8000  =  Sybase ASE'
-    Write-Host '8100  =  Citrix Netscaler'
-    Write-Host '8200  =  1Password, cloudkeychain'
-    Write-Host '8300  =  DNSSEC (NSEC3)'
-    Write-Host '8400  =  WBB3 (Woltlab Burning Board)'
-    Write-Host '8500  =  RACF'
-    Write-Host '8600  =  Lotus Notes/Domino 5'
-    Write-Host '8700  =  Lotus Notes/Domino 6'
-    Write-Host '8800  =  Android FDE < v4.3'
-    Write-Host '8900  =  scrypt'
-    Write-Host '9000  =  Password Safe v2'
-    Write-Host '9100  =  Lotus Notes/Domino 8'
-    Write-Host '9200  =  Cisco-IOS $8$'
-    Write-Host '9300  =  Cisco-IOS $9$'
-    Write-Host '9400  =  MS Office 2007'
-    Write-Host '9500  =  MS Office 2010'
-    Write-Host '9600  =  MS Office 2013'
-    Write-Host '9900  =  Radmin2'
-    Write-Host '10000  =  Django (PBKDF2-SHA256)'
-    Write-Host '10100  =  SipHash'
-    Write-Host '10200  =  Cram MD5'
-    Write-Host '10300  =  SAP CODVN H (PWDSALTEDHASH) iSSHA-1'
-    Write-Host '10400  =  PDF 1.1 - 1.3 (Acrobat 2 - 4)'
-    Write-Host '10410  =  PDF 1.1 - 1.3 (Acrobat 2 - 4) + collider-mode #1'
-    Write-Host '10420  =  PDF 1.1 - 1.3 (Acrobat 2 - 4) + collider-mode #2'
-    Write-Host '10500  =  PDF 1.4 - 1.6 (Acrobat 5 - 8)'
-    Write-Host '10600  =  PDF 1.7 Level 3 (Acrobat 9)'
-    Write-Host '10700  =  PDF 1.7 Level 8 (Acrobat 10 - 11)'
-    Write-Host '10800  =  SHA-384'
-    Write-Host '10900  =  PBKDF2-HMAC-SHA256'
-    Write-Host '11000  =  PrestaShop'
-    Write-Host '11100  =  PostgreSQL Challenge-Response Authentication (MD5)'
-    Write-Host '11200  =  MySQL Challenge-Response Authentication (SHA1)'
-    Write-Host '11300  =  Bitcoin/Litecoin wallet.dat'
-    Write-Host '11400  =  SIP digest authentication (MD5)'
-    Write-Host '11500  =  CRC32'
-    Write-Host '11600  =  7-Zip'
-    Write-Host '11700  =  GOST R 34.11-2012 (Streebog) 256-bit'
-    Write-Host '11800  =  GOST R 34.11-2012 (Streebog) 512-bit'
-    Write-Host '11900  =  PBKDF2-HMAC-MD5'
-    Write-Host '12000  =  PBKDF2-HMAC-SHA1'
-    Write-Host '12100  =  PBKDF2-HMAC-SHA512'
-    Write-Host '12200  =  eCryptfs'
-    Write-Host '12300  =  Oracle T: Type (Oracle 12+)'
-    Write-Host '12400  =  BSDiCrypt, Extended DES'
-    Write-Host '12500  =  RAR3-hp'
-    Write-Host '12600  =  ColdFusion 10+'
-    Write-Host '12700  =  Blockchain, My Wallet'
-    Write-Host '12800  =  MS-AzureSync PBKDF2-HMAC-SHA256 |'
+   Write-Host "
+        # | Name                                             | Category
+  ======+==================================================+======================================
+    900 | MD4                                              | Raw Hash
+      0 | MD5                                              | Raw Hash
+   5100 | Half MD5                                         | Raw Hash
+    100 | SHA1                                             | Raw Hash
+   1300 | SHA-224                                          | Raw Hash
+   1400 | SHA-256                                          | Raw Hash
+  10800 | SHA-384                                          | Raw Hash
+   1700 | SHA-512                                          | Raw Hash
+   5000 | SHA-3 (Keccak)                                   | Raw Hash
+    600 | BLAKE2b-512                                      | Raw Hash
+  10100 | SipHash                                          | Raw Hash
+   6000 | RIPEMD-160                                       | Raw Hash
+   6100 | Whirlpool                                        | Raw Hash
+   6900 | GOST R 34.11-94                                  | Raw Hash
+  11700 | GOST R 34.11-2012 (Streebog) 256-bit             | Raw Hash
+  11800 | GOST R 34.11-2012 (Streebog) 512-bit             | Raw Hash
+     10 | md5($pass.$salt)                                 | Raw Hash, Salted and/or Iterated
+     20 | md5($salt.$pass)                                 | Raw Hash, Salted and/or Iterated
+     30 | md5(utf16le($pass).$salt)                        | Raw Hash, Salted and/or Iterated
+     40 | md5($salt.utf16le($pass))                        | Raw Hash, Salted and/or Iterated
+   3800 | md5($salt.$pass.$salt)                           | Raw Hash, Salted and/or Iterated
+   3710 | md5($salt.md5($pass))                            | Raw Hash, Salted and/or Iterated
+   4010 | md5($salt.md5($salt.$pass))                      | Raw Hash, Salted and/or Iterated
+   4110 | md5($salt.md5($pass.$salt))                      | Raw Hash, Salted and/or Iterated
+   2600 | md5(md5($pass))                                  | Raw Hash, Salted and/or Iterated
+   3910 | md5(md5($pass).md5($salt))                       | Raw Hash, Salted and/or Iterated
+   4300 | md5(strtoupper(md5($pass)))                      | Raw Hash, Salted and/or Iterated
+   4400 | md5(sha1($pass))                                 | Raw Hash, Salted and/or Iterated
+    110 | sha1($pass.$salt)                                | Raw Hash, Salted and/or Iterated
+    120 | sha1($salt.$pass)                                | Raw Hash, Salted and/or Iterated
+    130 | sha1(utf16le($pass).$salt)                       | Raw Hash, Salted and/or Iterated
+    140 | sha1($salt.utf16le($pass))                       | Raw Hash, Salted and/or Iterated
+   4500 | sha1(sha1($pass))                                | Raw Hash, Salted and/or Iterated
+   4520 | sha1($salt.sha1($pass))                          | Raw Hash, Salted and/or Iterated
+   4700 | sha1(md5($pass))                                 | Raw Hash, Salted and/or Iterated
+   4900 | sha1($salt.$pass.$salt)                          | Raw Hash, Salted and/or Iterated
+  14400 | sha1(CX)                                         | Raw Hash, Salted and/or Iterated
+   1410 | sha256($pass.$salt)                              | Raw Hash, Salted and/or Iterated
+   1420 | sha256($salt.$pass)                              | Raw Hash, Salted and/or Iterated
+   1430 | sha256(utf16le($pass).$salt)                     | Raw Hash, Salted and/or Iterated
+   1440 | sha256($salt.utf16le($pass))                     | Raw Hash, Salted and/or Iterated
+   1710 | sha512($pass.$salt)                              | Raw Hash, Salted and/or Iterated
+   1720 | sha512($salt.$pass)                              | Raw Hash, Salted and/or Iterated
+   1730 | sha512(utf16le($pass).$salt)                     | Raw Hash, Salted and/or Iterated
+   1740 | sha512($salt.utf16le($pass))                     | Raw Hash, Salted and/or Iterated
+     50 | HMAC-MD5 (key = $pass)                           | Raw Hash, Authenticated
+     60 | HMAC-MD5 (key = $salt)                           | Raw Hash, Authenticated
+    150 | HMAC-SHA1 (key = $pass)                          | Raw Hash, Authenticated
+    160 | HMAC-SHA1 (key = $salt)                          | Raw Hash, Authenticated
+   1450 | HMAC-SHA256 (key = $pass)                        | Raw Hash, Authenticated
+   1460 | HMAC-SHA256 (key = $salt)                        | Raw Hash, Authenticated
+   1750 | HMAC-SHA512 (key = $pass)                        | Raw Hash, Authenticated
+   1760 | HMAC-SHA512 (key = $salt)                        | Raw Hash, Authenticated
+  14000 | DES (PT = $salt, key = $pass)                    | Raw Cipher, Known-Plaintext attack
+  14100 | 3DES (PT = $salt, key = $pass)                   | Raw Cipher, Known-Plaintext attack
+  14900 | Skip32 (PT = $salt, key = $pass)                 | Raw Cipher, Known-Plaintext attack
+  15400 | ChaCha20                                         | Raw Cipher, Known-Plaintext attack
+    400 | phpass                                           | Generic KDF
+   8900 | scrypt                                           | Generic KDF
+  11900 | PBKDF2-HMAC-MD5                                  | Generic KDF
+  12000 | PBKDF2-HMAC-SHA1                                 | Generic KDF
+  10900 | PBKDF2-HMAC-SHA256                               | Generic KDF
+  12100 | PBKDF2-HMAC-SHA512                               | Generic KDF
+     23 | Skype                                            | Network Protocols
+   2500 | WPA/WPA2                                         | Network Protocols
+   2501 | WPA/WPA2 PMK                                     | Network Protocols
+   4800 | iSCSI CHAP authentication, MD5(CHAP)             | Network Protocols
+   5300 | IKE-PSK MD5                                      | Network Protocols
+   5400 | IKE-PSK SHA1                                     | Network Protocols
+   5500 | NetNTLMv1                                        | Network Protocols
+   5500 | NetNTLMv1+ESS                                    | Network Protocols
+   5600 | NetNTLMv2                                        | Network Protocols
+   7300 | IPMI2 RAKP HMAC-SHA1                             | Network Protocols
+   7500 | Kerberos 5 AS-REQ Pre-Auth etype 23              | Network Protocols
+   8300 | DNSSEC (NSEC3)                                   | Network Protocols
+  10200 | CRAM-MD5                                         | Network Protocols
+  11100 | PostgreSQL CRAM (MD5)                            | Network Protocols
+  11200 | MySQL CRAM (SHA1)                                | Network Protocols
+  11400 | SIP digest authentication (MD5)                  | Network Protocols
+  13100 | Kerberos 5 TGS-REP etype 23                      | Network Protocols
+  16100 | TACACS+                                          | Network Protocols
+  16500 | JWT (JSON Web Token)                             | Network Protocols
+    121 | SMF (Simple Machines Forum) > v1.1               | Forums, CMS, E-Commerce, Frameworks
+    400 | phpBB3 (MD5)                                     | Forums, CMS, E-Commerce, Frameworks
+   2611 | vBulletin < v3.8.5                               | Forums, CMS, E-Commerce, Frameworks
+   2711 | vBulletin >= v3.8.5                              | Forums, CMS, E-Commerce, Frameworks
+   2811 | MyBB 1.2+                                        | Forums, CMS, E-Commerce, Frameworks
+   2811 | IPB2+ (Invision Power Board)                     | Forums, CMS, E-Commerce, Frameworks
+   8400 | WBB3 (Woltlab Burning Board)                     | Forums, CMS, E-Commerce, Frameworks
+     11 | Joomla < 2.5.18                                  | Forums, CMS, E-Commerce, Frameworks
+    400 | Joomla >= 2.5.18 (MD5)                           | Forums, CMS, E-Commerce, Frameworks
+    400 | WordPress (MD5)                                  | Forums, CMS, E-Commerce, Frameworks
+   2612 | PHPS                                             | Forums, CMS, E-Commerce, Frameworks
+   7900 | Drupal7                                          | Forums, CMS, E-Commerce, Frameworks
+     21 | osCommerce                                       | Forums, CMS, E-Commerce, Frameworks
+     21 | xt:Commerce                                      | Forums, CMS, E-Commerce, Frameworks
+  11000 | PrestaShop                                       | Forums, CMS, E-Commerce, Frameworks
+    124 | Django (SHA-1)                                   | Forums, CMS, E-Commerce, Frameworks
+  10000 | Django (PBKDF2-SHA256)                           | Forums, CMS, E-Commerce, Frameworks
+  16000 | Tripcode                                         | Forums, CMS, E-Commerce, Frameworks
+   3711 | MediaWiki B type                                 | Forums, CMS, E-Commerce, Frameworks
+  13900 | OpenCart                                         | Forums, CMS, E-Commerce, Frameworks
+   4521 | Redmine                                          | Forums, CMS, E-Commerce, Frameworks
+   4522 | PunBB                                            | Forums, CMS, E-Commerce, Frameworks
+  12001 | Atlassian (PBKDF2-HMAC-SHA1)                     | Forums, CMS, E-Commerce, Frameworks
+     12 | PostgreSQL                                       | Database Server
+    131 | MSSQL (2000)                                     | Database Server
+    132 | MSSQL (2005)                                     | Database Server
+   1731 | MSSQL (2012, 2014)                               | Database Server
+    200 | MySQL323                                         | Database Server
+    300 | MySQL4.1/MySQL5                                  | Database Server
+   3100 | Oracle H: Type (Oracle 7+)                       | Database Server
+    112 | Oracle S: Type (Oracle 11+)                      | Database Server
+  12300 | Oracle T: Type (Oracle 12+)                      | Database Server
+   8000 | Sybase ASE                                       | Database Server
+    141 | Episerver 6.x < .NET 4                           | HTTP, SMTP, LDAP Server
+   1441 | Episerver 6.x >= .NET 4                          | HTTP, SMTP, LDAP Server
+   1600 | Apache $apr1$ MD5, md5apr1, MD5 (APR)            | HTTP, SMTP, LDAP Server
+  12600 | ColdFusion 10+                                   | HTTP, SMTP, LDAP Server
+   1421 | hMailServer                                      | HTTP, SMTP, LDAP Server
+    101 | nsldap, SHA-1(Base64), Netscape LDAP SHA         | HTTP, SMTP, LDAP Server
+    111 | nsldaps, SSHA-1(Base64), Netscape LDAP SSHA      | HTTP, SMTP, LDAP Server
+   1411 | SSHA-256(Base64), LDAP {SSHA256}                 | HTTP, SMTP, LDAP Server
+   1711 | SSHA-512(Base64), LDAP {SSHA512}                 | HTTP, SMTP, LDAP Server
+  16400 | CRAM-MD5 Dovecot                                 | HTTP, SMTP, LDAP Server
+  15000 | FileZilla Server >= 0.9.55                       | FTP Server
+  11500 | CRC32                                            | Checksums
+   3000 | LM                                               | Operating Systems
+   1000 | NTLM                                             | Operating Systems
+   1100 | Domain Cached Credentials (DCC), MS Cache        | Operating Systems
+   2100 | Domain Cached Credentials 2 (DCC2), MS Cache 2   | Operating Systems
+  15300 | DPAPI masterkey file v1                          | Operating Systems
+  15900 | DPAPI masterkey file v2                          | Operating Systems
+  12800 | MS-AzureSync  PBKDF2-HMAC-SHA256                 | Operating Systems
+   1500 | descrypt, DES (Unix), Traditional DES            | Operating Systems
+  12400 | BSDi Crypt, Extended DES                         | Operating Systems
+    500 | md5crypt, MD5 (Unix), Cisco-IOS $1$ (MD5)        | Operating Systems
+   3200 | bcrypt $2*$, Blowfish (Unix)                     | Operating Systems
+   7400 | sha256crypt $5$, SHA256 (Unix)                   | Operating Systems
+   1800 | sha512crypt $6$, SHA512 (Unix)                   | Operating Systems
+    122 | macOS v10.4, MacOS v10.5, MacOS v10.6            | Operating Systems
+   1722 | macOS v10.7                                      | Operating Systems
+   7100 | macOS v10.8+ (PBKDF2-SHA512)                     | Operating Systems
+   6300 | AIX {smd5}                                       | Operating Systems
+   6700 | AIX {ssha1}                                      | Operating Systems
+   6400 | AIX {ssha256}                                    | Operating Systems
+   6500 | AIX {ssha512}                                    | Operating Systems
+   2400 | Cisco-PIX MD5                                    | Operating Systems
+   2410 | Cisco-ASA MD5                                    | Operating Systems
+    500 | Cisco-IOS $1$ (MD5)                              | Operating Systems
+   5700 | Cisco-IOS type 4 (SHA256)                        | Operating Systems
+   9200 | Cisco-IOS $8$ (PBKDF2-SHA256)                    | Operating Systems
+   9300 | Cisco-IOS $9$ (scrypt)                           | Operating Systems
+     22 | Juniper NetScreen/SSG (ScreenOS)                 | Operating Systems
+    501 | Juniper IVE                                      | Operating Systems
+  15100 | Juniper/NetBSD sha1crypt                         | Operating Systems
+   7000 | FortiGate (FortiOS)                              | Operating Systems
+   5800 | Samsung Android Password/PIN                     | Operating Systems
+  13800 | Windows Phone 8+ PIN/password                    | Operating Systems
+   8100 | Citrix NetScaler                                 | Operating Systems
+   8500 | RACF                                             | Operating Systems
+   7200 | GRUB 2                                           | Operating Systems
+   9900 | Radmin2                                          | Operating Systems
+    125 | ArubaOS                                          | Operating Systems
+   7700 | SAP CODVN B (BCODE)                              | Enterprise Application Software (EAS)
+   7800 | SAP CODVN F/G (PASSCODE)                         | Enterprise Application Software (EAS)
+  10300 | SAP CODVN H (PWDSALTEDHASH) iSSHA-1              | Enterprise Application Software (EAS)
+   8600 | Lotus Notes/Domino 5                             | Enterprise Application Software (EAS)
+   8700 | Lotus Notes/Domino 6                             | Enterprise Application Software (EAS)
+   9100 | Lotus Notes/Domino 8                             | Enterprise Application Software (EAS)
+    133 | PeopleSoft                                       | Enterprise Application Software (EAS)
+  13500 | PeopleSoft PS_TOKEN                              | Enterprise Application Software (EAS)
+  11600 | 7-Zip                                            | Archives
+  12500 | RAR3-hp                                          | Archives
+  13000 | RAR5                                             | Archives
+  13200 | AxCrypt                                          | Archives
+  13300 | AxCrypt in-memory SHA1                           | Archives
+  13600 | WinZip                                           | Archives
+  14700 | iTunes backup < 10.0                             | Backup
+  14800 | iTunes backup >= 10.0                            | Backup
+   62XY | TrueCrypt                                        | Full-Disk Encryption (FDE)
+     X  | 1 = PBKDF2-HMAC-RIPEMD160                        | Full-Disk Encryption (FDE)
+     X  | 2 = PBKDF2-HMAC-SHA512                           | Full-Disk Encryption (FDE)
+     X  | 3 = PBKDF2-HMAC-Whirlpool                        | Full-Disk Encryption (FDE)
+     X  | 4 = PBKDF2-HMAC-RIPEMD160 + boot-mode            | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure AES                        | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure Serpent                    | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure Twofish                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure AES                        | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure Serpent                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure Twofish                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded AES-Twofish            | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded Serpent-AES            | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded Twofish-Serpent        | Full-Disk Encryption (FDE)
+      Y | 3 = XTS 1536 bit all                             | Full-Disk Encryption (FDE)
+   8800 | Android FDE <= 4.3                               | Full-Disk Encryption (FDE)
+  12900 | Android FDE (Samsung DEK)                        | Full-Disk Encryption (FDE)
+  12200 | eCryptfs                                         | Full-Disk Encryption (FDE)
+  137XY | VeraCrypt                                        | Full-Disk Encryption (FDE)
+     X  | 1 = PBKDF2-HMAC-RIPEMD160                        | Full-Disk Encryption (FDE)
+     X  | 2 = PBKDF2-HMAC-SHA512                           | Full-Disk Encryption (FDE)
+     X  | 3 = PBKDF2-HMAC-Whirlpool                        | Full-Disk Encryption (FDE)
+     X  | 4 = PBKDF2-HMAC-RIPEMD160 + boot-mode            | Full-Disk Encryption (FDE)
+     X  | 5 = PBKDF2-HMAC-SHA256                           | Full-Disk Encryption (FDE)
+     X  | 6 = PBKDF2-HMAC-SHA256 + boot-mode               | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure AES                        | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure Serpent                    | Full-Disk Encryption (FDE)
+      Y | 1 = XTS  512 bit pure Twofish                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure AES                        | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure Serpent                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit pure Twofish                    | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded AES-Twofish            | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded Serpent-AES            | Full-Disk Encryption (FDE)
+      Y | 2 = XTS 1024 bit cascaded Twofish-Serpent        | Full-Disk Encryption (FDE)
+      Y | 3 = XTS 1536 bit all                             | Full-Disk Encryption (FDE)
+  14600 | LUKS                                             | Full-Disk Encryption (FDE)
+   9700 | MS Office <= 2003 $0/$1, MD5 + RC4               | Documents
+   9710 | MS Office <= 2003 $0/$1, MD5 + RC4, collider #1  | Documents
+   9720 | MS Office <= 2003 $0/$1, MD5 + RC4, collider #2  | Documents
+   9800 | MS Office <= 2003 $3/$4, SHA1 + RC4              | Documents
+   9810 | MS Office <= 2003 $3, SHA1 + RC4, collider #1    | Documents
+   9820 | MS Office <= 2003 $3, SHA1 + RC4, collider #2    | Documents
+   9400 | MS Office 2007                                   | Documents
+   9500 | MS Office 2010                                   | Documents
+   9600 | MS Office 2013                                   | Documents
+  10400 | PDF 1.1 - 1.3 (Acrobat 2 - 4)                    | Documents
+  10410 | PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1       | Documents
+  10420 | PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #2       | Documents
+  10500 | PDF 1.4 - 1.6 (Acrobat 5 - 8)                    | Documents
+  10600 | PDF 1.7 Level 3 (Acrobat 9)                      | Documents
+  10700 | PDF 1.7 Level 8 (Acrobat 10 - 11)                | Documents
+  16200 | Apple Secure Notes                               | Documents
+   9000 | Password Safe v2                                 | Password Managers
+   5200 | Password Safe v3                                 | Password Managers
+   6800 | LastPass + LastPass sniffed                      | Password Managers
+   6600 | 1Password, agilekeychain                         | Password Managers
+   8200 | 1Password, cloudkeychain                         | Password Managers
+  11300 | Bitcoin/Litecoin wallet.dat                      | Password Managers
+  12700 | Blockchain, My Wallet                            | Password Managers
+  15200 | Blockchain, My Wallet, V2                        | Password Managers
+  16600 | Electrum Wallet (Salt-Type 1-3)                  | Password Managers
+  13400 | KeePass 1 (AES/Twofish) and KeePass 2 (AES)      | Password Managers
+  15500 | JKS Java Key Store Private Keys (SHA1)           | Password Managers
+  15600 | Ethereum Wallet, PBKDF2-HMAC-SHA256              | Password Managers
+  15700 | Ethereum Wallet, SCRYPT                          | Password Managers
+  16300 | Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256     | Password Managers
+  99999 | Plaintext                                        | Plaintext"
     # Get Hash Mode from User Input
     $HASH_MODE = Read-Host -Prompt 'Hash Mode [0]'
     # setup Hashcat flags
