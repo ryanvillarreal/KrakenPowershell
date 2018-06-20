@@ -86,8 +86,8 @@ Function Get-FileName($initialDirectory)
 # main run function
 function run([string]$arg1){
     # Call the hashcat command here. 
-    #Invoke-Expression "& $HASHCAT $FLAGS $INPUT_FILE $arg1"
-	Write-Host "$HASHCAT $FLAGS $INPUT_FILE $arg1"
+    Invoke-Expression "& $HASHCAT $FLAGS $INPUT_FILE $arg1"
+	  #Write-Host "$HASHCAT $FLAGS $INPUT_FILE $arg1"
 }
 
 function getHashMode($CODENAME){
@@ -360,21 +360,19 @@ function importFile(){
 
 function getCompanyID(){
     # Get Company code 
-    $COMPANYCODE = Read-Host -Prompt 'Comapny Code'
-	
+    $COMPANYCODE = Read-Host -Prompt 'Company Code'
+
     # check to see if Company already has a folder. 
-    if (!(Test-Path -Path "C:\CrackApps\Data\$TEMP"  -PathType container)){
+    if (!(Test-Path -Path "C:\CrackApps\Data\$$COMPANYCODE"  -PathType container)){
       Write-Host "Folder does not exist. Creating folder structure."
-      New-Item -ItemType "directory" -Path "C:\CrackApps\Data\$COMPANYCODE" | Out-Null
-	  New-Item -ItemType "file" -Path "C:\CrackApps\Data\$COMPANYCODE\$COMPANYCODE.potfile" | Out-Null
-	  Write-Host $COMPANYCODE
-	  Read-Host "Pause"
-	  return $COMPANYCODE
+      New-Item -ItemType "directory" -Path "C:\CrackApps\Data\$COMPANYCODE"|out-null
+      New-Item -ItemType "file" -Path "C:\CrackApps\Data\$COMPANYCODE\$COMPANYCODE.potfile"|out-null
+      return $COMPANYCODE
     }
     else{
       Write-Host "Folder already exists.  Skipping folder creation."
     }
-	
+  
 }
 
 # Pre-Run Setup.  Check to see what Attacks are being run and do the user interaction before hand. 
@@ -524,16 +522,12 @@ $HASHCAT=fileCheck
 
 # Get Company Code
 $COMPANYCODE = getCompanyID
-Write-Host $COMPANYCODE
-Read-Host "Pause"
 
 # # Get Input File
 $INPUT_FILE = Get-FileName $currentpath
 
 # # Choose the HashMode
 $FLAGS = getHashMode($COMPANYCODE)
-Write-Host $FLAGS
-Read-Host "Pause"
 
 # # Choose Attack Types and Perform Setups for automation
 $selectedAttacks = getAttackTypes
